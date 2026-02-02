@@ -85,4 +85,5 @@ npx skills add {Your-path}/
 如果你觉得这个 Skill 有意思就给个 Star 吧！
 
 如果你真的中了大奖，能不能请我喝杯雪王呢？
-<img src="https://raw.githubusercontent.com/Konata9/pic-base/main/pics/20260128223151161.png" alt="雪王" width="200" />
+
+<img src="https://raw.githubusercontent.com/Konata9/pic-base/main/pics/20260128223151161.png" alt="雪王" width="300" />
