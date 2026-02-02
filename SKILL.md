@@ -1,93 +1,91 @@
 ---
 name: chinese-lottery-predict
-description: 根据往期彩票中奖结果预测下一期彩票中奖号码，并给出推荐。当用户询问“帮我预测下一期双色球中奖号码”，“帮我推荐下一期大乐透中奖号码”时，使用此技能。
+description: Predicts the next lottery numbers for Chinese lotteries like Double Color Ball (双色球) and Super Lotto (大乐透). Use this skill when user asks to predict lottery results in Chinese (e.g., "预测双色球", "大乐透推荐").
 ---
 
-# chinese-lottery-predict
+# Chinese Lottery Predict
 
-从中彩网的历史数据中分析出每期彩票的中奖号码，根据分析结果预测下一期彩票的中奖号码。
+Analyzes historical data from major Chinese lottery websites to provide statistical predictions for the next draw.
 
 ## Prerequisites
 
-- WebSearch tool available
-- Playwright installed
-- Internet connection
+- **WebSearch**: To fetch the latest lottery results.
+- **Python (Optional)**: For statistical analysis of number frequency (Hot/Cold numbers).
 
 ## Workflow
 
-### Input
+### 1. Input Parsing
+The user will provide:
+- **Lottery Type**: e.g., "双色球" (Double Color Ball) or "大乐透" (Super Lotto).
+- **Funds** (Optional): Budget for the purchase (default: "10元").
 
-User provides:
-- **LotteryType** (required): The type of lottery to predict (e.g., "双色球", "大乐透")
-- **Funds** (optional): The funds user want to pay.(e.g., "20元"), default is "20元"
-- **Language** (optional): Output language, defaults to Chinese (zh-CN)
+### 2. Data Retrieval
+Use `WebSearch` to find the latest 30-50 draw results.
 
-### History data fetch
+#### Search Strategy (Anti-Scraping & Reliability)
+1. **Primary Search (Official Sources)**: Attempt to fetch data from official government or authoritative industry sites first.
+   - **Keywords**: `site:cwl.gov.cn {Lottery Type} 往期`, `site:lottery.gov.cn {Lottery Type} 开奖公告`, `site:500.com {Lottery Type} 走势图`
+   - **Target Domains**:
+     - `cwl.gov.cn` (China Welfare Lottery - Official for Double Color Ball)
+     - `lottery.gov.cn` (China Sports Lottery - Official for Super Lotto)
+     - `zhcw.com` (China Lottery Online)
+     - `500.com` (500.com)
 
-Use Playwright get the history data of the specified lottery type.
-- 双色球：
-  - https://www.zhcw.com/kjxx/ssq/
-  - https://www.cwl.gov.cn/ygkj/wqkjgg/ssq/
-- 大乐透：
-  - https://www.zhcw.com/kjxx/dlt/
-  - https://www.lottery.gov.cn/kj/kjlb.html?dlt
+2. **Fallback Search (Static/Portal Sites)**:
+   - **Trigger**: If official sites fail to load content (due to dynamic JS rendering or anti-scraping blocks) or return incomplete data.
+   - **Action**: Search for static news portals or text-based lists which are easier to parse.
+   - **Keywords**: `"{Lottery Type}" 近50期开奖结果 汇总 新浪`, `"{Lottery Type}" 历史号码 文本版`
+   - **Target Domains**: `sina.com.cn`, `163.com`, `sohu.com`.
 
-Compare the history data make sure history data is complete and correct.
+#### Data Verification
+- Cross-reference the latest draw date from at least two sources to ensure data is up-to-date.
+- Ensure the "Issue Number" (期号) is continuous.
 
-If can not find the history data, use WebSearch tool to search for the latest history data.
+### 3. Data Analysis
+Analyze the retrieved data to identify:
+- **Hot Numbers**: Numbers that appeared most frequently in the last 30 draws.
+- **Cold Numbers**: Numbers that haven't appeared in a long time.
+- **Omitted Numbers**: Current omission count for each number.
 
-Goal: Analyze the historical data to predict the next lottery draw.
+### 4. Prediction Generation
+Generate 1-5 sets of numbers based on a mix of Hot and Cold numbers.
+*Disclaimer: Lottery draws are independent random events. Predictions are for entertainment only.*
 
-### Output Format
+### 5. Output Generation
+Generate a report in Chinese using the following format.
 
-Generate structured material document:
+#### Output Template
 
 ```markdown
-# {LotteryType} 预测建议
+# {LotteryType} 预测分析报告
 
-## 收集时间
-{timestamp}
+## 📅 基本信息
+- **分析期数**: 近 {count} 期
+- **数据来源**: {source_domain}
+- **下期开奖**: {next_draw_date}
 
-## 历史数据分析
-{siteaddress}
+## 📊 历史数据分析
+- **热号 (Hot)**: {hot_numbers}
+- **冷号 (Cold)**: {cold_numbers}
 
-## 下期开奖时间
-{nextlotterydraw}
+## 🔮 推荐号码
+根据历史走势分析，为您生成以下推荐：
 
-## 号码预测
-根据历史数据分析，预测下一期彩票的中奖号码组。
+| 方案 | 红球 | 蓝球/后区 | 说明 |
+| :--- | :--- | :--- | :--- |
+| 1 | {reds} | {blues} | {reason} |
+| 2 | {reds} | {blues} | {reason} |
 
-- {lotterytype} 中奖号码预测组：
-  - 红球：{predictedrednumbers} 蓝球：{predictedbluenumbers}
-  - 红球：{predictedrednumbers} 蓝球：{predictedbluenumbers}
-  - 红球：{predictedrednumbers} 蓝球：{predictedbluenumbers}
-  - ... 
+## 💡 购彩建议 (预算: {funds})
+{suggestion_text}
 
-## 购彩建议
-根据预测结果，建议用户在 {funds} 的前提下购买 {lotterytype} 彩票。
-可以按以下方式购买：
-- 建议1：...
-- 建议2：...
-
-注意：以上结果由 AI 预测，不构成任何购买建议。请理性考虑后购买。
+> **⚠️ 风险提示**: 彩票无绝对规律，预测结果仅供参考，请理性投注。
 ```
 
-## Execution Steps
+## Examples
 
-1. **Receive lotterytype** from user
-2. **Use Playwright tool to get the history data of the specified lottery type from given site.**
-3. **Get history data from site**
-4. **Analyze history data**
-5. **Predict next lottery numbers**
+**User**: "预测下期双色球"
+**Action**: Search "双色球近30期开奖", analyze frequencies, generate report.
 
-## Example
-
-User: `帮我预测下一期双色球中奖号码`
-
-Expected behavior:
-1. Search "https://www.zhcw.com/kjxx/ssq/"
-2. Analyze history data to predict the next lottery draw.
-3. Generate structured material report
-
-## Tips
-- Always note the source URL for credibility
+**User**: "大乐透，买50块钱的"
+**Action**: Search "大乐透近30期开奖", generate ~2-3 combinations fitting the 50 RMB budget.
