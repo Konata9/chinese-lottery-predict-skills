@@ -13,14 +13,14 @@
 
 ### 1. 使用 npx 安装
 ```
-npx skills add Konata9/chinese-lottery-skills
+npx skills add Konata9/chinese-lottery-predict-skills
 ```
 
 ### 2. 克隆仓库
 在您的终端中运行以下命令，将 Skill 下载到本地工作区：
 
 ```bash
-git clone git@github.com:Konata9/chinese-lottery-skills.git
+git clone git@github.com:Konata9/chinese-lottery-predict-skills.git
 
 npx skills add {Your-path}/
 ```
