@@ -210,10 +210,9 @@ def duckduckgo_search(query, max_results=5):
 
 ### 新增功能
 1. **Node.js实现**：创建了 `lotteryPredict.js`，符合此方的技术偏好
-2. **Python实现**：保留了 `lottery_predict.py` 作为备选
-3. **节假日配置**：可扩展的节假日系统，支持未来年份更新
-4. **预算计算**：根据预算自动计算可购买注数
-5. **多种策略**：热号策略、冷号策略、混合策略
+2. **节假日配置**：可扩展的节假日系统，支持未来年份更新
+3. **预算计算**：根据预算自动计算可购买注数
+4. **多种策略**：热号策略、冷号策略、混合策略
 
 ### 使用示例
 
@@ -223,9 +222,6 @@ node lotteryPredict.js dlt 10
 
 # 预测双色球，预算20元
 node lotteryPredict.js ssq 20
-
-# 使用Python版本
-python lottery_predict.py dlt 10
 ```
 
 ### 输出示例
