@@ -61,6 +61,7 @@ skill 获取真实数据时应按以下优先级尝试：
 
 - 数据来源与校验规则：[references/data-sources.md](references/data-sources.md)
 
-## License
+---
 
-MIT License
+欢迎关注公众号：此方的手账
+![此方的手账](https://raw.githubusercontent.com/Konata9/pic-base/main/pics/%E6%AD%A4%E6%96%B9%E7%9A%84%E6%89%8B%E8%B4%A6%E5%85%AC%E4%BC%97%E5%8F%B7%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
